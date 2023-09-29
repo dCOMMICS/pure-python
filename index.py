@@ -3,7 +3,7 @@ myLunch = input("What are you having for lunch? ")
 print(myName, "is going to be chowing down on", myLunch, "very soon!")
 
 # WEEK-3 of 2 major project ideas if your specifics are web development.🔍
-
+# work on this project
 # 1. Real-time Collaborative Whiteboard
 # Tech Stack:
 # Frontend: HTML, CSS, JavaScript, React
