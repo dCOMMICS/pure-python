@@ -24,3 +24,14 @@ else:
     print('Object poses no threat')
     
     
+    # conditional logic and control flow
+    
+    # boolean comparators: == ,!= ,<,>,=<,>=
+    # logical operators: and, or, not
+    # conditional logic: if ...elif..else
+    # expecption handling try ...expept.
+    # loops : for , while
+    # control flow statement: break,continue
+    
+    
+    
