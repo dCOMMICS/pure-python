@@ -107,4 +107,20 @@ function Canvas({ shapes }) {
 
 /* Rectangle */
 
+const Rectangle = ({ shape, id, onShapePointerDown, selectionColor }) => {
+  const { x, y, fill } = shape;
+
+  return (
+    <div
+      onPointerDown={(e) => onShapePointerDown(e, id)}
+      className="rectangle"
+      style={{
+        transform: `translate(${x}px, ${y}px)`,
+        backgroundColor: fill? fill : "#CCC",
+        borderColor: selectionColor || "transparent",
+      }}
+    ></div>
+  );
+};
+
 
