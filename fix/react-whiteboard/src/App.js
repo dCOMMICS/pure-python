@@ -145,34 +145,106 @@ const Rectangle = ({ shape, id, onShapePointerDown, selectionColor }) => {
 //   history.resume();
 // };
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+// import {
+//   useMap,
+//   useMyPresence,
+//   useOthers,
+//   useHistory,
+//   useBatch,
+// } from "./liveblocks.config";
+
+// /* ... */
+
+// function Canvas({ shapes }) {
+//   /* ... */
+//   const batch = useBatch();
+
+//   const insertRectangle = () => {
+//     batch(() => {
+//       const shapeId = Date.now().toString();
+//       const rectangle = {
+//         x: getRandomInt(300),
+//         y: getRandomInt(300),
+//         fill: getRandomColor(),
+//       };
+//       shapes.set(shapeId, rectangle);
+//       setPresence({ selectedShape: shapeId }, { addToHistory: true });
+//     });
+//   };
+
+//   /* ... */
+// }
+import { useState, useEffect, memo } from "react";
 import {
-  useMap,
   useMyPresence,
+  useMap,
   useOthers,
   useHistory,
   useBatch,
+  useRoom,
 } from "./liveblocks.config";
+import { LiveObject } from "@liveblocks/client";
 
 /* ... */
 
 function Canvas({ shapes }) {
   /* ... */
-  const batch = useBatch();
 
   const insertRectangle = () => {
     batch(() => {
       const shapeId = Date.now().toString();
-      const rectangle = {
+      const shape = new LiveObject({
         x: getRandomInt(300),
         y: getRandomInt(300),
         fill: getRandomColor(),
-      };
-      shapes.set(shapeId, rectangle);
+      });
+      shapes.set(shapeId, shape);
       setPresence({ selectedShape: shapeId }, { addToHistory: true });
     });
   };
 
   /* ... */
+
+  const onCanvasPointerMove = (e) => {
+    e.preventDefault();
+
+    if (isDragging) {
+      const shape = shapes.get(selectedShape);
+      if (shape) {
+        shape.update({
+          x: e.clientX - 50,
+          y: e.clientY - 50,
+        });
+      }
+    }
+  };
+
+  return (/* ... */);
 }
 
+const Rectangle = memo(({ shape, id, onShapePointerDown, selectionColor }) => {
+  const [{ x, y, fill }, setShapeData] = useState(shape.toObject());
+
+  const room = useRoom();
+
+  useEffect(() => {
+    function onChange() {
+      setShapeData(shape.toObject());
+    }
+
+    return room.subscribe(shape, onChange);
+  }, [room, shape]);
+
+  return (
+    <div
+      onPointerDown={(e) => onShapePointerDown(e, id)}
+      className="rectangle"
+      style={{
+        transform: `translate(${x}px, ${y}px)`,
+        backgroundColor: fill ? fill : "#CCC",
+        borderColor: selectionColor || "transparent",
+      }}
+    ></div>
+  );
+});
