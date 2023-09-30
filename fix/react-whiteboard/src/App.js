@@ -106,3 +106,5 @@ function Canvas({ shapes }) {
 }
 
 /* Rectangle */
+
+
