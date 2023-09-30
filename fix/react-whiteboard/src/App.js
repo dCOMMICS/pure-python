@@ -123,4 +123,26 @@ const Rectangle = ({ shape, id, onShapePointerDown, selectionColor }) => {
   );
 };
 
+// pause and resume //
+
+const onShapePointerDown = (e, shapeId) => {
+  // eslint-disable-next-line no-restricted-globals
+  history.pause();
+  e.stopPropagation();
+
+  setPresence({ selectedShape: shapeId }, { addToHistory: true });
+
+  setIsDragging(true);
+};
+
+const onCanvasPointerUp = (e) => {
+  if (!isDragging) {
+    setPresence({ selectedShape: null }, { addToHistory: true });
+  }
+
+  setIsDragging(false);
+
+  history.resume();
+};
+
 
