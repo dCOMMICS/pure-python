@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useMap } from "./liveblocks.config";
 
-function App() {
+import "./App.css";
+
+export default function App() {
+  const shapes = useMap("shapes");
+
+  if (shapes == null) {
+    return <div className="loading">Loading</div>;
+  }
+
+  return <Canvas shapes={shapes} />;
+}
+
+function Canvas({ shapes }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="canvas">
+        {Array.from(shapes, ([shapeId, shape]) => {
+          return <Rectangle key={shapeId} shape={shape} />;
+        })}
+      </div>
+    </>
   );
 }
 
-export default App;
+const Rectangle = ({ shape }) => {
+  const { x, y, fill } = shape;
+
+  return (
+    <div
+      className="rectangle"
+      style={{
+        transform: `translate(${x}px, ${y}px)`,
+        backgroundColor: fill ? fill : "#CCC",
+      }}
+    ></div>
+  );
+};
