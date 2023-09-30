@@ -125,24 +125,54 @@ const Rectangle = ({ shape, id, onShapePointerDown, selectionColor }) => {
 
 // pause and resume //
 
-const onShapePointerDown = (e, shapeId) => {
-  // eslint-disable-next-line no-restricted-globals
-  history.pause();
-  e.stopPropagation();
+// const onShapePointerDown = (e, shapeId) => {
+//   // eslint-disable-next-line no-restricted-globals
+//   history.pause();
+//   e.stopPropagation();
 
-  setPresence({ selectedShape: shapeId }, { addToHistory: true });
+//   setPresence({ selectedShape: shapeId }, { addToHistory: true });
 
-  setIsDragging(true);
-};
+//   setIsDragging(true);
+// };
 
-const onCanvasPointerUp = (e) => {
-  if (!isDragging) {
-    setPresence({ selectedShape: null }, { addToHistory: true });
-  }
+// const onCanvasPointerUp = (e) => {
+//   if (!isDragging) {
+//     setPresence({ selectedShape: null }, { addToHistory: true });
+//   }
 
-  setIsDragging(false);
+//   setIsDragging(false);
 
-  history.resume();
-};
+//   history.resume();
+// };
 
+import { useEffect, useState } from "react";
+import {
+  useMap,
+  useMyPresence,
+  useOthers,
+  useHistory,
+  useBatch,
+} from "./liveblocks.config";
+
+/* ... */
+
+function Canvas({ shapes }) {
+  /* ... */
+  const batch = useBatch();
+
+  const insertRectangle = () => {
+    batch(() => {
+      const shapeId = Date.now().toString();
+      const rectangle = {
+        x: getRandomInt(300),
+        y: getRandomInt(300),
+        fill: getRandomColor(),
+      };
+      shapes.set(shapeId, rectangle);
+      setPresence({ selectedShape: shapeId }, { addToHistory: true });
+    });
+  };
+
+  /* ... */
+}
 
